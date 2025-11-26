@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-sepia-50: #fdfbf7;
+  --color-sepia-100: #f7f1e3;
+  --color-sepia-200: #efe2c6;
+  --color-sepia-300: #e2cd9f;
+  --color-sepia-400: #d2b476;
+  --color-sepia-500: #c19a55;
+  --color-sepia-600: #a37d40;
+  --color-sepia-700: #826034;
+  --color-sepia-800: #6b4e2e;
+  --color-sepia-900: #584028;
+
+  --color-olive-50: #f4f7f0;
+  --color-olive-100: #e6eedd;
+  --color-olive-200: #ceddbc;
+  --color-olive-300: #acc492;
+  --color-olive-400: #8aa66d;
+  --color-olive-500: #6b8a4f;
+  --color-olive-600: #536e3b;
+  --color-olive-700: #425831;
+  --color-olive-800: #36462b;
+  --color-olive-900: #2d3a25;
+
+  --color-beige-100: #f5f5dc;
+  --color-beige-200: #eaddcf;
+  --color-beige-300: #dcc6b6;
+
+  --font-serif: var(--font-serif), serif;
+  --font-sans: var(--font-sans), sans-serif;
+
+  --background-image-paper-texture: url('/textures/paper.png');
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  --background: var(--color-sepia-50);
+  --foreground: var(--color-olive-900);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-olive-900);
+    --foreground: var(--color-sepia-50);
   }
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: var(--font-sans);
+
+  /* CSS Pattern for "Tapestry/Paper" feel */
+  background-image: radial-gradient(#d2b476 0.5px, transparent 0.5px), radial-gradient(#d2b476 0.5px, #fdfbf7 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  background-blend-mode: multiply;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
 }

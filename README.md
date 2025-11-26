@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cafe Ancestral - Web Application
 
-## Getting Started
+Modern, artisanal coffee shop web application built with Next.js, TypeScript, Tailwind CSS, and Supabase.
 
-First, run the development server:
+## Features
+
+- 🎨 Premium, rustic design with Olive/Sepia color palette
+- 📱 Fully responsive (mobile, tablet, desktop)
+- 🗄️ Dynamic menu with Supabase backend
+- 🎯 Special offers system
+- 📝 Blog/Events integration
+- 🛒 Shopping cart with WhatsApp checkout
+- 🔐 Admin dashboard (coming soon)
+
+## Setup Instructions
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Supabase
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Run the SQL from `schema.sql` in your Supabase SQL Editor
+3. Copy `.env.local.example` to `.env.local`:
+   ```bash
+   cp env.example .env.local
+   ```
+4. Add your Supabase credentials to `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Database Schema
 
-To learn more about Next.js, take a look at the following resources:
+The app uses the following tables:
+- `categories` - Menu categories (drinks, food, etc.)
+- `products` - Menu items with prices, ingredients, allergens
+- `offers` - Special time-limited offers
+- `blog_posts` - Blog posts and events
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+See `schema.sql` for the complete schema.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Database**: Supabase (PostgreSQL)
+- **State**: Zustand
+- **Icons**: Lucide React
+- **Deployment**: Vercel (recommended)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/              # Next.js pages
+├── components/       # React components
+│   ├── layout/      # Header, Footer
+│   └── ui/          # Hero, Cards, etc.
+├── lib/             # Utilities and database functions
+├── store/           # Zustand stores
+└── types/           # TypeScript types
+```
+
+## License
+
+Private project for Cafe Ancestral.
