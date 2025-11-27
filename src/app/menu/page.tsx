@@ -139,75 +139,110 @@ export default function MenuPage() {
                     ))}
                 </div>
 
-                {/* Products Grid */}
-                {filteredProducts.length === 0 ? (
-                    <div className="text-center py-16">
-                        <p className="text-olive-800/60 text-lg">No hay productos disponibles en esta categoría.</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {filteredProducts.map((product) => (
-                            <div key={product.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-sepia-100 flex flex-col">
-                                <div className="relative h-64 overflow-hidden">
-                                    <Image
-                                        src={product.image_url || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop'}
-                                        alt={product.name}
-                                        fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                    {!product.is_available && (
-                                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-                                            <span className="text-white font-bold text-lg tracking-widest uppercase border-2 border-white px-4 py-2">Agotado</span>
-                                        </div>
-                                    )}
-                                    {product.allergens && (
-                                        <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                            Alérgenos
-                                        </div>
-                                    )}
-                                    {/* Overlay gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Products Sections */}
+                {(() => {
+                    // 1. Determine which categories to show
+                    const categoriesToShow = activeCategory === 'all'
+                        ? [
+                            ...categories.filter(c => c.type === 'drink'),
+                            ...categories.filter(c => c.type === 'food')
+                        ]
+                        : categories.filter(c => c.slug === activeCategory);
+
+                    // 2. Check if there are any products at all for the selected view
+                    const hasAnyProducts = categoriesToShow.some(cat =>
+                        products.some(p => p.category_id === cat.id)
+                    );
+
+                    if (!hasAnyProducts) {
+                        return (
+                            <div className="text-center py-16">
+                                <p className="text-olive-800/60 text-lg">No hay productos disponibles en esta categoría.</p>
+                            </div>
+                        );
+                    }
+
+                    // 3. Render sections
+                    return categoriesToShow.map(category => {
+                        const categoryProducts = products.filter(p => p.category_id === category.id);
+
+                        if (categoryProducts.length === 0) return null;
+
+                        return (
+                            <div key={category.id} className="mb-20">
+                                <div className="flex items-center gap-6 mb-10">
+                                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-olive-900 whitespace-nowrap">
+                                        {category.name}
+                                    </h2>
+                                    <div className="h-0.5 bg-sepia-200 flex-1 rounded-full"></div>
                                 </div>
 
-                                <div className="p-6 flex-1 flex flex-col">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h3 className="text-xl font-serif font-bold text-olive-900 group-hover:text-olive-700 transition-colors">{product.name}</h3>
-                                        <span className="text-lg font-bold text-olive-600 bg-sepia-50 px-3 py-1 rounded-full">${product.price}</span>
-                                    </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {categoryProducts.map((product) => (
+                                        <div key={product.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-sepia-100 flex flex-col">
+                                            <div className="relative h-64 overflow-hidden">
+                                                <Image
+                                                    src={product.image_url || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop'}
+                                                    alt={product.name}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                                {!product.is_available && (
+                                                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                                                        <span className="text-white font-bold text-lg tracking-widest uppercase border-2 border-white px-4 py-2">Agotado</span>
+                                                    </div>
+                                                )}
+                                                {product.allergens && (
+                                                    <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                                        Alérgenos
+                                                    </div>
+                                                )}
+                                                {/* Overlay gradient */}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                            </div>
 
-                                    <p className="text-olive-800/60 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">
-                                        {product.description}
-                                    </p>
+                                            <div className="p-6 flex-1 flex flex-col">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <h3 className="text-xl font-serif font-bold text-olive-900 group-hover:text-olive-700 transition-colors">{product.name}</h3>
+                                                    <span className="text-lg font-bold text-olive-600 bg-sepia-50 px-3 py-1 rounded-full">${product.price}</span>
+                                                </div>
 
-                                    {product.ingredients && (
-                                        <p className="text-xs text-olive-800/40 mb-4 italic">
-                                            {product.ingredients}
-                                        </p>
-                                    )}
+                                                <p className="text-olive-800/60 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">
+                                                    {product.description}
+                                                </p>
 
-                                    <div className="flex justify-between items-center pt-4 border-t border-sepia-100">
-                                        {product.allergens ? (
-                                            <span className="text-xs text-amber-700 font-medium bg-amber-50 px-2 py-1 rounded-md border border-amber-100 max-w-[50%] leading-tight">
-                                                Puede contener: {product.allergens}
-                                            </span>
-                                        ) : (
-                                            <span />
-                                        )}
+                                                {product.ingredients && (
+                                                    <p className="text-xs text-olive-800/40 mb-4 italic">
+                                                        {product.ingredients}
+                                                    </p>
+                                                )}
 
-                                        <button
-                                            onClick={() => handleAddToCart(product)}
-                                            disabled={!product.is_available}
-                                            className="bg-olive-700 text-sepia-50 px-6 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-olive-800 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform active:scale-95"
-                                        >
-                                            <Plus className="w-4 h-4" />
-                                            AGREGAR
-                                        </button>
-                                    </div>
+                                                <div className="flex justify-between items-center pt-4 border-t border-sepia-100">
+                                                    {product.allergens ? (
+                                                        <span className="text-xs text-amber-700 font-medium bg-amber-50 px-2 py-1 rounded-md border border-amber-100 max-w-[50%] leading-tight">
+                                                            Puede contener: {product.allergens}
+                                                        </span>
+                                                    ) : (
+                                                        <span />
+                                                    )}
+
+                                                    <button
+                                                        onClick={() => handleAddToCart(product)}
+                                                        disabled={!product.is_available}
+                                                        className="bg-olive-700 text-sepia-50 px-6 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 hover:bg-olive-800 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform active:scale-95"
+                                                    >
+                                                        <Plus className="w-4 h-4" />
+                                                        AGREGAR
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                )}
+                        );
+                    });
+                })()}
             </main>
 
             <Footer />

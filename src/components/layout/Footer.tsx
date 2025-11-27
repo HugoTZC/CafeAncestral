@@ -26,10 +26,10 @@ export function Footer() {
                             Café de especialidad y cocina de autor. Un homenaje a los sabores auténticos y el tiempo bien vivido.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="#" className="w-10 h-10 rounded-full bg-olive-800 flex items-center justify-center hover:bg-sepia-500 hover:text-white transition-all">
+                            <Link href="https://www.instagram.com/ancestral.jrz" className="w-10 h-10 rounded-full bg-olive-800 flex items-center justify-center hover:bg-sepia-500 hover:text-white transition-all">
                                 <Instagram className="w-5 h-5" />
                             </Link>
-                            <Link href="#" className="w-10 h-10 rounded-full bg-olive-800 flex items-center justify-center hover:bg-sepia-500 hover:text-white transition-all">
+                            <Link href="https://www.facebook.com/profile.php?id=100085154720647&sk=photos&locale=es_LA" className="w-10 h-10 rounded-full bg-olive-800 flex items-center justify-center hover:bg-sepia-500 hover:text-white transition-all">
                                 <Facebook className="w-5 h-5" />
                             </Link>
                         </div>
@@ -52,15 +52,15 @@ export function Footer() {
                         <ul className="space-y-4 text-sepia-200/70">
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 mt-1 shrink-0 text-sepia-400" />
-                                <span>Calle Principal #123,<br />Centro Histórico</span>
+                                <span> Pradera de urique 32696 #9503,<br />Ciudad Juárez, Chihuahua, México</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="w-5 h-5 shrink-0 text-sepia-400" />
-                                <span>+52 123 456 7890</span>
+                                <span>+52 656 229 3633</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="w-5 h-5 shrink-0 text-sepia-400" />
-                                <span>hola@cafeancestral.com</span>
+                                <span>jrzancestral@gmail.com</span>
                             </li>
                         </ul>
                     </div>

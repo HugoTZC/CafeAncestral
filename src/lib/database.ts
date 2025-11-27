@@ -172,6 +172,63 @@ export async function getPublishedBlogPosts(limit?: number): Promise<BlogPost[]>
     return data || [];
 }
 
+export async function getAllBlogPosts(): Promise<BlogPost[]> {
+    const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('published_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching all blog posts:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+export async function createBlogPost(post: Omit<BlogPost, 'id' | 'created_at'>): Promise<BlogPost | null> {
+    const { data, error } = await supabase
+        .from('blog_posts')
+        .insert(post)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error creating blog post:', error);
+        throw error;
+    }
+
+    return data;
+}
+
+export async function updateBlogPost(id: string, updates: Partial<BlogPost>): Promise<BlogPost | null> {
+    const { data, error } = await supabase
+        .from('blog_posts')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error updating blog post:', error);
+        throw error;
+    }
+
+    return data;
+}
+
+export async function deleteBlogPost(id: string): Promise<void> {
+    const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error deleting blog post:', error);
+        throw error;
+    }
+}
+
 // Featured Items
 export async function getFeaturedItems(): Promise<FeaturedItem[]> {
     const { data, error } = await supabase
