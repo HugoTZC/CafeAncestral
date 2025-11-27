@@ -5,12 +5,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getCurrentUser, checkAdminStatus } from "@/lib/auth";
 import { createProduct, getCategories } from "@/lib/database";
+import { uploadImage } from "@/lib/storage";
 import type { Category } from "@/types/database";
-import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Upload, X } from 'lucide-react';
 
 export default function NewProductPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [imagePreview, setImagePreview] = useState<string>('');
     const [categories, setCategories] = useState<Category[]>([]);
     const router = useRouter();
 
@@ -45,6 +48,26 @@ export default function NewProductPage() {
 
         init();
     }, [router]);
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        try {
+            const url = await uploadImage(file);
+            if (url) {
+                setFormData({ ...formData, image_url: url });
+                setImagePreview(URL.createObjectURL(file));
+            } else {
+                alert('Error al subir la imagen');
+            }
+        } catch (error) {
+            alert('Error al subir la imagen');
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -152,16 +175,42 @@ export default function NewProductPage() {
 
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-bold text-olive-800 mb-2">
-                                    URL de Imagen
+                                    Imagen del Producto
                                 </label>
-                                <input
-                                    type="url"
-                                    value={formData.image_url}
-                                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                                    className="w-full px-4 py-3 border border-sepia-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-olive-500 text-olive-900"
-                                    placeholder="https://images.unsplash.com/..."
-                                />
-                                <p className="text-xs text-olive-600 mt-1">Puedes usar URLs de Unsplash para pruebas</p>
+                                <div className="border-2 border-dashed border-sepia-300 rounded-lg p-6 text-center">
+                                    {imagePreview ? (
+                                        <div className="relative">
+                                            <img src={imagePreview} alt="Preview" className="w-full h-64 object-cover rounded-lg" />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setImagePreview('');
+                                                    setFormData({ ...formData, image_url: '' });
+                                                }}
+                                                className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label className="cursor-pointer block">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                                className="hidden"
+                                                disabled={uploading}
+                                            />
+                                            <div>
+                                                <Upload className="w-12 h-12 text-olive-300 mx-auto mb-4" />
+                                                <span className="text-olive-700 font-medium hover:text-olive-900 block">
+                                                    {uploading ? 'Subiendo...' : 'Click para subir imagen'}
+                                                </span>
+                                                <p className="text-xs text-olive-600 mt-2">PNG, JPG, WEBP hasta 5MB</p>
+                                            </div>
+                                        </label>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="md:col-span-2">
@@ -206,7 +255,7 @@ export default function NewProductPage() {
                         <div className="flex gap-4 pt-6 border-t border-sepia-200">
                             <button
                                 type="submit"
-                                disabled={saving}
+                                disabled={saving || uploading}
                                 className="flex-1 bg-olive-700 text-sepia-50 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-olive-800 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
                             >
                                 {saving ? (

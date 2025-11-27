@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingCart, Menu as MenuIcon, User } from 'lucide-react';
 
 export function Header() {
@@ -7,8 +8,13 @@ export function Header() {
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 {/* Logo and Name */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-12 h-12 bg-olive-700 rounded-full flex items-center justify-center text-sepia-50 font-serif font-bold text-2xl shadow-md group-hover:bg-olive-800 transition-all transform group-hover:scale-105">
-                        CA
+                    <div className="relative w-12 h-12 group-hover:scale-105 transition-transform rounded-2xl overflow-hidden">
+                        <Image
+                            src="/logoGreen.jpg"
+                            alt="Cafe Ancestral"
+                            fill
+                            className="object-contain"
+                        />
                     </div>
                     <span className="font-serif text-2xl font-bold text-olive-900 tracking-wide group-hover:text-olive-700 transition-colors">
                         Cafe Ancestral

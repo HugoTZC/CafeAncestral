@@ -1,11 +1,29 @@
+"use client";
+
+import { useEffect, useState } from 'react';
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/ui/Hero";
+import { getFeaturedItems } from "@/lib/database";
+import type { FeaturedItem } from "@/types/database";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
+  const [featuredItems, setFeaturedItems] = useState<FeaturedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFeaturedItems() {
+      const items = await getFeaturedItems();
+      setFeaturedItems(items);
+      setLoading(false);
+    }
+
+    loadFeaturedItems();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-sepia-50/50">
       <Header />
@@ -34,7 +52,7 @@ export default function Home() {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-sepia-200/30 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
         </section>
 
-        {/* Featured Categories - Premium Cards */}
+        {/* Featured Items - Dynamic from Database */}
         <section className="py-20 bg-white/50 backdrop-blur-sm">
           <div className="container mx-auto px-6">
             <div className="flex justify-between items-end mb-12">
@@ -49,31 +67,39 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { title: "Café de Especialidad", image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2071&auto=format&fit=crop", link: "/menu?category=cafe" },
-                { title: "Pizzas Masa Madre", image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=2069&auto=format&fit=crop", link: "/menu?category=pizza" },
-                { title: "Postres Artesanales", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072&auto=format&fit=crop", link: "/menu?category=postres" }
-              ].map((item, idx) => (
-                <Link key={idx} href={item.link} className="group relative h-[400px] overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                  <div className="absolute bottom-0 left-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      {item.title}
-                    </h3>
-                    <span className="text-sepia-200 font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
-                      Explorar <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-olive-600">Cargando...</p>
+              </div>
+            ) : featuredItems.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-olive-600">No hay items destacados disponibles</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {featuredItems.map((item) => (
+                  <Link key={item.id} href={item.link_url} className="group relative h-[400px] overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all">
+                    {item.image_url && (
+                      <Image
+                        src={item.image_url}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                    <div className="absolute bottom-0 left-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                        {item.title}
+                      </h3>
+                      <span className="text-sepia-200 font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        Explorar <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <div className="mt-8 text-center md:hidden">
               <Link href="/menu" className="inline-flex items-center gap-2 text-olive-700 font-bold hover:text-olive-900 transition-colors">

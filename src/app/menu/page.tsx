@@ -9,7 +9,7 @@ import type { Category, Product, Offer } from "@/types/database";
 import { useCartStore } from "@/store/cart";
 import { useToastStore } from "@/store/toast";
 import { ToastContainer } from "@/components/ui/Toast";
-import { Plus, Info, Sparkles } from 'lucide-react';
+import { Plus, Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function MenuPage() {
@@ -186,12 +186,13 @@ export default function MenuPage() {
                                     )}
 
                                     <div className="flex justify-between items-center pt-4 border-t border-sepia-100">
-                                        <button
-                                            className="text-olive-500 hover:text-olive-800 transition-colors p-2 hover:bg-sepia-50 rounded-full"
-                                            title="Ver detalles e ingredientes"
-                                        >
-                                            <Info className="w-5 h-5" />
-                                        </button>
+                                        {product.allergens ? (
+                                            <span className="text-xs text-amber-700 font-medium bg-amber-50 px-2 py-1 rounded-md border border-amber-100 max-w-[50%] leading-tight">
+                                                Puede contener: {product.allergens}
+                                            </span>
+                                        ) : (
+                                            <span />
+                                        )}
 
                                         <button
                                             onClick={() => handleAddToCart(product)}

@@ -102,13 +102,21 @@ export default function AdminDashboard() {
                         <p className="text-sm text-olive-800/60">Organizar el menú</p>
                     </Link>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
+                    <Link href="/admin/hero-banners" className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
+                        <div className="w-12 h-12 bg-olive-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-olive-200 transition-colors">
+                            <FileText className="w-6 h-6 text-olive-700" />
+                        </div>
+                        <h3 className="font-serif text-xl font-bold text-olive-900 mb-1">Hero Banners</h3>
+                        <p className="text-sm text-olive-800/60">Carrusel principal</p>
+                    </Link>
+
+                    <Link href="/admin/featured-items" className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
                         <div className="w-12 h-12 bg-sepia-200 rounded-lg flex items-center justify-center mb-4 group-hover:bg-sepia-300 transition-colors">
                             <Tag className="w-6 h-6 text-sepia-700" />
                         </div>
-                        <h3 className="font-serif text-xl font-bold text-olive-900 mb-1">Ofertas</h3>
-                        <p className="text-sm text-olive-800/60">Crear promociones especiales</p>
-                    </div>
+                        <h3 className="font-serif text-xl font-bold text-olive-900 mb-1">Items Destacados</h3>
+                        <p className="text-sm text-olive-800/60">Sección "Descubre"</p>
+                    </Link>
 
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
                         <div className="w-12 h-12 bg-olive-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-olive-200 transition-colors">

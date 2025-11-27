@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Facebook, Instagram, MapPin, Phone, Mail } from 'lucide-react';
 
 export function Footer() {
@@ -12,8 +13,13 @@ export function Footer() {
                     {/* Brand */}
                     <div className="md:col-span-1">
                         <Link href="/" className="inline-block mb-6">
-                            <div className="w-16 h-16 bg-sepia-100 rounded-full flex items-center justify-center text-olive-900 font-serif font-bold text-2xl">
-                                CA
+                            <div className="relative w-16 h-16 rounded-2xl overflow-hidden">
+                                <Image
+                                    src="/logoWhite.jpg"
+                                    alt="Cafe Ancestral"
+                                    fill
+                                    className="object-contain"
+                                />
                             </div>
                         </Link>
                         <p className="text-sepia-200/70 leading-relaxed mb-6">

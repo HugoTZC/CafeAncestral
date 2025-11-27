@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { signIn } from "@/lib/auth";
@@ -36,8 +37,13 @@ export default function AdminPage() {
             <main className="flex-1 container mx-auto px-6 py-12 flex flex-col items-center justify-center">
                 <div className="bg-white p-10 rounded-2xl shadow-xl border border-sepia-100 max-w-md w-full">
                     <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-olive-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Lock className="w-8 h-8 text-sepia-50" />
+                        <div className="relative w-20 h-20 mx-auto mb-4 rounded-2xl overflow-hidden">
+                            <Image
+                                src="/logoBrown.jpg"
+                                alt="Cafe Ancestral Admin"
+                                fill
+                                className="object-contain"
+                            />
                         </div>
                         <h1 className="text-3xl font-serif font-bold text-olive-900 mb-2">
                             Acceso Administrativo
