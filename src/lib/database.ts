@@ -172,6 +172,21 @@ export async function getPublishedBlogPosts(limit?: number): Promise<BlogPost[]>
     return data || [];
 }
 
+export async function getBlogPostById(id: string): Promise<BlogPost | null> {
+    const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        console.error('Error fetching blog post:', error);
+        return null;
+    }
+
+    return data;
+}
+
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
     const { data, error } = await supabase
         .from('blog_posts')

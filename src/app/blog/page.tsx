@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { getPublishedBlogPosts } from "@/lib/database";
@@ -56,33 +57,35 @@ export default function BlogPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {posts.map((post) => (
-                            <article key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-sepia-100 group">
-                                <div className="relative h-56 overflow-hidden">
-                                    <Image
-                                        src={post.image_url || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop'}
-                                        alt={post.title}
-                                        fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex items-center gap-2 text-sm text-olive-600 mb-3">
-                                        <Calendar className="w-4 h-4" />
-                                        <time>{new Date(post.published_at).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                            <Link href={`/blog/${post.id}`} key={post.id} className="block group">
+                                <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-sepia-100 h-full flex flex-col">
+                                    <div className="relative h-56 overflow-hidden">
+                                        <Image
+                                            src={post.image_url || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop'}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                     </div>
-                                    <h2 className="text-2xl font-serif font-bold text-olive-900 mb-3 group-hover:text-olive-700 transition-colors">
-                                        {post.title}
-                                    </h2>
-                                    <p className="text-olive-800/70 mb-4 line-clamp-3">
-                                        {post.excerpt || post.content.substring(0, 150) + '...'}
-                                    </p>
-                                    <button className="text-olive-700 font-bold hover:text-olive-900 transition-colors flex items-center gap-2">
-                                        Leer más
-                                        <span className="group-hover:translate-x-1 transition-transform">→</span>
-                                    </button>
-                                </div>
-                            </article>
+                                    <div className="p-6 flex-1 flex flex-col">
+                                        <div className="flex items-center gap-2 text-sm text-olive-600 mb-3">
+                                            <Calendar className="w-4 h-4" />
+                                            <time>{new Date(post.published_at).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                                        </div>
+                                        <h2 className="text-2xl font-serif font-bold text-olive-900 mb-3 group-hover:text-olive-700 transition-colors">
+                                            {post.title}
+                                        </h2>
+                                        <p className="text-olive-800/70 mb-4 line-clamp-3 flex-1">
+                                            {post.excerpt || post.content.substring(0, 150) + '...'}
+                                        </p>
+                                        <div className="text-olive-700 font-bold group-hover:text-olive-900 transition-colors flex items-center gap-2 mt-auto">
+                                            Leer más
+                                            <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </Link>
                         ))}
                     </div>
                 )}

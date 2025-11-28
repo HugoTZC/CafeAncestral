@@ -59,8 +59,8 @@ export default function AdminDashboard() {
             <header className="bg-white border-b border-sepia-200 sticky top-0 z-50 shadow-sm">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-olive-700 rounded-full flex items-center justify-center text-sepia-50 font-serif font-bold text-xl">
-                            CA
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                            <img src="/logoBrown.jpg" alt="CA" className="object-cover w-full h-full" />
                         </div>
                         <div>
                             <h1 className="font-serif text-xl font-bold text-olive-900">Panel Administrativo</h1>
@@ -126,13 +126,13 @@ export default function AdminDashboard() {
                         <p className="text-sm text-olive-800/60">Publicar historias y eventos</p>
                     </Link>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
+                    <Link href="/admin/stats" className="bg-white p-6 rounded-2xl shadow-sm border border-sepia-100 hover:shadow-lg transition-all cursor-pointer group">
                         <div className="w-12 h-12 bg-sepia-200 rounded-lg flex items-center justify-center mb-4 group-hover:bg-sepia-300 transition-colors">
                             <LayoutDashboard className="w-6 h-6 text-sepia-700" />
                         </div>
                         <h3 className="font-serif text-xl font-bold text-olive-900 mb-1">Estadísticas</h3>
                         <p className="text-sm text-olive-800/60">Ver métricas del sitio</p>
-                    </div>
+                    </Link>
                 </div>
 
                 {/* Coming Soon Notice */}
